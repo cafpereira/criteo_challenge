@@ -1,0 +1,2 @@
+cd /Applications/weka-3-7-11
+java -Xmx2048m -jar weka.jar
