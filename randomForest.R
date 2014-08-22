@@ -1,20 +1,18 @@
 # Clean up workspace
 rm(list=ls())
-setwd("~/Documents/Data Science 2014/kaggle/criteo")
 
-train = read.csv("~/Documents/Data Science 2014/kaggle/criteo/samples/train_sample_45K.csv", encoding = "UTF-8")
-test = read.csv("~/Documents/Data Science 2014/kaggle/criteo/samples/train_sample_4K.csv", encoding = "UTF-8")
+setwd("~/Documents/Data Science 2014/kaggle/criteo_challenge")
+train <- read.csv("~/Documents/Data Science 2014/kaggle/criteo_challenge/samples/train_sample_45K.csv")
+test <- read.csv("~/Documents/Data Science 2014/kaggle/criteo_challenge/samples/train_sample_4K.csv")
 
-summary(train$Label)
+########### Clean Missing Data ###########
 
 summary(train$I1) # Too many NA's, dont use it
 summary(train$I2) # OK
-
 summary(train$I3)
 train$I3[is.na(train$I3)] <- median(train$I3, na.rm=TRUE)
 
 summary(train$I4) # Too many NA's, dont use it
-
 summary(train)
 train$I5[is.na(train$I5)] <- median(train$I5, na.rm=TRUE)
 
@@ -35,6 +33,8 @@ train$I11[is.na(train$I11)] <- median(train$I11, na.rm=TRUE)
 summary(train$I12) # Too many NA's, dont use it
 summary(train$I13) # Too many NA's, dont use it
 
+########### Combine data sets and fix factor levels ###########
+
 combi <- rbind(train, test)
 combi$C6 <- factor(combi$C6)
 combi$C9 <- factor(combi$C9)
@@ -47,6 +47,7 @@ combi$C23 <- factor(combi$C23)
 train <- combi[1:45840,]
 test <- combi[45841:50424,]
 
+########### Create Random Forest ###########
 library(randomForest)
 set.seed(415)
 
@@ -56,7 +57,6 @@ fit <- randomForest(as.factor(Label) ~ I2 + I3 + I5 + I7 + I8 + I9 + I11 +
 varImpPlot(fit)
 
 library(caret)
-
 Prediction <- predict(fit, test)
 confusionMatrix(Prediction, test$Label)
 
