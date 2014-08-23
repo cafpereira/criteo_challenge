@@ -67,3 +67,7 @@ confusionMatrix(Prediction, test$Label)
 #       Balanced Accuracy : 0.5652          
 #                                           
 #        'Positive' Class : 0
+
+PredictionProb <- predict(fit, test, type = "prob")
+submit <- data.frame(Id = test$Id, Predicted = PredictionProb[,2])
+write.csv(submit, file = "submit.csv", row.names = FALSE)
