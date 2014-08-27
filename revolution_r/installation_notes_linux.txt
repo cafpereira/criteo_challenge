@@ -4,22 +4,27 @@ source: http://www.rackspace.com/knowledge_center/article/installing-rhel-epel-r
 wget http://dl.fedoraproject.org/pub/epel/5/x86_64/epel-release-5-4.noarch.rpm
 sudo rpm -Uvh epel-release-5*.rpm
 
-2) Install Revolution R Linux
+2) Make and build utilities (CentOS/RHEL)
+source: http://stackoverflow.com/questions/171506/make-and-build-utilities-on-centos-rhel
+--- script ---
+sudo yum groupinstall "Development Tools"
+
+3) Install Revolution R Linux
 source: http://www.revolutionanalytics.com/revolution-r-enterprise-72-linux-installation-instructions
 --- script ---
 tar -xzf Revo-Ent-7.2.0-RHEL5.tar.gz
 sudo ./install.py 
 
-3) Install Rstudio Server
+4) Install Rstudio Server
 source: http://www.rstudio.com/products/rstudio/download-server/
 --- script ---
 wget http://download2.rstudio.org/rstudio-server-0.98.1028-x86_64.rpm
 sudo yum install --nogpgcheck rstudio-server-0.98.1028-x86_64.rpm
 
-4) Create new user
+5) Create new user
 source: https://aws.amazon.com/marketplace/usageinstructions?product=c3e780ee-ff2d-4912-9bfd-29237aa9023a&version=7.01
 --- script ---
 sudo useradd <username>
 sudo passwd <username>
 
-5) Login on http://<server>:8787
+6) Login on http://<server>:8787
