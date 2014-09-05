@@ -20,11 +20,6 @@ sapply(train[,16:41],function(x) length(levels(x)))
 c_excluded <- c(18, 19, 22, 25, 26, 27, 28, 30, 31, 33, 34, 36, 39, 41)
 train <- train[,-c_excluded]
 
-sapply(test[,15:40],function(x) length(levels(x)))
-# 15    16    17    18    19    20    21    22    23   24    25    26    27    28    29    30    31    32    33    34    35    36    37    38    39    40
-# C1    C2    C3    C4    C5    C6    C7    C8    C9   C10   C11   C12   C13   C14   C15   C16   C17   C18   C19   C20   C21   C22  C23   C24   C25   C26
-# 1351 554 1654604  496952 280  23   11815  596   3   55575  4852 1426969 3129 27   12147 1029668  10  4866  2077  4   1254819 18   14  107746  90   69136
-
 c_excluded <- c(17, 18, 21, 24, 25, 26, 27, 29, 30, 32, 33, 35, 38, 40)
 test <- test[,-c_excluded]
 
@@ -49,24 +44,37 @@ best.iter <- gbm.perf(feature_model, method="cv") ##the best iteration number
 print(pretty.gbm.tree(feature_model, best.iter))
 summary(feature_model, n.trees=best.iter)
 
-# 1      2  3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26
-# Label  I1  I2  I3	I4	I5	I6	I7	I8	I9	I10	I11	I12	I13	C1	C2	C5	C6	C8	C9	C14	C17	C20	C22	C23	C25
+# 1      2  3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27
+# Id Label  I1  I2  I3  I4  I5  I6  I7  I8  I9  I10 I11 I12 I13 C1  C2  C5  C6  C8  C9  C14 C17 C20 C22 C23 C25
 
 # var     rel.inf
-# C2   C2 46.27364362 - 16
-# I6   I6 30.77519350 - 7
-# I11 I11  6.95886203 - 12
-# I13 I13  4.31791464 - 14
-# C1   C1  4.15908372 - 15
-# I5   I5  2.28242117 - 6
-# C14 C14  1.97579587 - 21
-# C17 C17  1.23798402 - 22
-# C23 C23  0.93071655 - 25
-# I3   I3  0.88941680 - 4
-# C8   C8  0.11059903 - 19
-# I7   I7  0.08836905 - 8
+# I6   I6 42.04094383
+# C2   C2 20.85789215
+# I11 I11 10.27174442
+# I13 I13  5.86261973
+# C14 C14  5.04273909
+# C1   C1  3.07837031
+# C17 C17  2.54729484
+# I5   I5  2.24711525
+# I3   I3  1.95978243
+# C23 C23  1.58229260
+# C20 C20  0.99134385
+# I4   I4  0.86641050
+# I7   I7  0.66188380
+# C8   C8  0.48895777
+# I1   I1  0.43074617
+# I12 I12  0.39816170
+# I9   I9  0.33358313
+# I8   I8  0.18087074
+# C6   C6  0.05885133
+# C22 C22  0.05508166
+# I2   I2  0.02170433
+# I10 I10  0.02161038
+# C5   C5  0.00000000
+# C9   C9  0.00000000
+# C25 C25  0.00000000
 
-top_features <- c(2,16,7,12,14,15,6,21,22,25,4,19,8)
+top_features <- c(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,19,20,22,23,24,25,26)
 
 ## Build final GBM model
 gbm_model <- gbm(Label ~ . 
@@ -84,7 +92,7 @@ gbm_model <- gbm(Label ~ .
                  ,verbose=TRUE)
 
 ## Predict probabilities
-Prediction <- predict(gbm_model, test, GBM_NTREES, type="response")
+Prediction <- predict(gbm_model, test, best.iter, type="response")
 summary(Prediction)
 
 # Create submission file

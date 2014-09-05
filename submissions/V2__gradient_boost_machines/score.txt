@@ -1,0 +1,5 @@
+link: https://www.kaggle.com/c/criteo-display-ad-challenge/leaderboard?submissionId=948100
+
+pos		score		date
+---------------------------------------------
+#269	0.50587 	Fri, 05 Sep 2014 20:16:48
